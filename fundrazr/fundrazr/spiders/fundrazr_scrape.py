@@ -25,4 +25,17 @@ class Fundrazr(scrapy.Spider):
     def parse_dir_contents(self, response):
         item = FundrazrItem()
 
-        item['campaignTitle'] = response.xpath("//div[contains(@id, 'campaign-title')]/descendant::text()").extract_first().strip()
+        item['campaignTitle'] = response.xpath(
+            "//div[contains(@id, 'campaign-title')]/descendant::text()").extract_first().strip()
+
+        item['amountRaised'] = response.xpath(
+            "//span[contains(@class, 'stat')]/span[contains(@class, 'amount-raised')]/descendant::text()").extract()
+
+        item['goal'] = "".join(response.xpath(
+            "//span[contains(@class, 'stats-primary with-goal')]/span[contains(@class, 'stats-label hidden-phone')]/text()").extract()).strip()
+
+        item['currencyType'] = response.xpath(
+            "//span[contains(@class, 'stats-primary with-goal')]/@title").extract()
+
+        item['endDate'] = response.xpath(
+            "//span[contains(@class, 'stats-primary with-goal')]/@title").extract()
