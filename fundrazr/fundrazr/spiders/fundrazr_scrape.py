@@ -32,10 +32,10 @@ class Fundrazr(scrapy.Spider):
             "//span[contains(@class, 'stat')]/span[contains(@class, 'amount-raised')]/descendant::text()").extract()
 
         item['goal'] = "".join(response.xpath(
-            "//span[contains(@class, 'stats-primary with-goal')]/span[contains(@class, 'stats-label hidden-phone')]/text()").extract()).strip()
+            "//span[contains(@class, 'stats-primary with-goal')]//span[contains(@class, 'stats-label hidden-phone')]/text()").extract()).strip()
 
         item['currencyType'] = response.xpath(
             "//span[contains(@class, 'stats-primary with-goal')]/@title").extract()
 
-        item['endDate'] = response.xpath(
-            "//span[contains(@class, 'stats-primary with-goal')]/@title").extract()
+        item['endDate'] = "".join(response.xpath(
+            "//div[contains(@id, 'campaign-stats')]//span[contains(@class, 'stats-label hidden-phone')]/text()").extract()).strip()
