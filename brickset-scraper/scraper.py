@@ -14,5 +14,5 @@ class BrickSetSpider(scrapy.Spider):
             # so we can pass in a selector to locate child elements.
             NAME_SELECTOR = 'h1 a ::text'  # append ::text to fetch text inside of the a tag
             yield {
-                'name': brickset,css(NAME_SELECTOR).extract_first(),
+                'name': brickset.css(NAME_SELECTOR).extract_first(),
             }
