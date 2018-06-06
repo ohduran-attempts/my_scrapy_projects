@@ -38,4 +38,19 @@ class Fundrazr(scrapy.Spider):
             "//span[contains(@class, 'stats-primary with-goal')]/@title").extract()
 
         item['endDate'] = "".join(response.xpath(
-            "//div[contains(@id, 'campaign-stats')]//span[contains(@class, 'stats-label hidden-phone')]/text()").extract()).strip()
+            "//div[contains(@id, 'campaign-stats')]//span[contains(@class, 'stats-label hidden-phone')]/span[@class='nowrap']/text()").extract()).strip()
+
+        item['numberContributors'] = response.xpath(
+            "//div[contains(@class, 'stats-secondary with-goal')]//span[contains(@class, 'donation-count stat')]/text()").extract()
+
+        # Getting story
+        story_list = response.xpath(
+            "//div[contains(@id, 'full-story')]/descendant::text()").extract()
+        story_list = [x.strip() for x in story_list if len(x.strip()) > 0]
+        item['story'] = "".join(story_list)
+
+        # URL
+        item['url'] = response.xpath(
+            "//meta[@property='og:url']/@content").extract()
+
+        yield item
