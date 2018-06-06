@@ -79,7 +79,7 @@ Scrapy grabs data based on selectors that you provide, patterns we can use to fi
 Since we are looking for a class, we will use '.set' in the selector. Another look at the source tells us that the name of each set is stored within an a tag inside an h1 tag for each set.
 
 ```html
-<h1><a href='/sets/10251-1/Brick-Bank'>Brick Bank</a></h1>
+<div class='highslide-caption'><h1>Brick Bank</h1></div>
 ```
 
 The brickset object has its own css method, so we can pass in a selector to locate child elements.
