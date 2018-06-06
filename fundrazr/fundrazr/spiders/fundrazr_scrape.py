@@ -11,7 +11,7 @@ class Fundrazr(scrapy.Spider):
     start_urls = ["https://fundrazr.com/find?category=Health"]
 
     npages = 2
-    download_delay = 2
+    download_delay = 2  #IMPORTANT FOR LARGE FILES
 
     # This mimics getting the pages using the next button
     for i in range(2, npages + 2):
