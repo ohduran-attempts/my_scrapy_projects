@@ -141,3 +141,19 @@ You'll notice that the top and bottom of each page has a little right carat `>` 
 There is, as you can see, a `li` tag with class 'next', and inside that tag, there is an `a` tag with a link to the next page.
 
 Once the next page selector is defined, if you run the spider again you'll see that it doesn't just stop once it iterates through the first page of sets, but keeps going through all 23 pages.
+
+## Step 4 - Save the Data
+
+You can save the data by running the following command:
+
+```scrapy runspider scraper.py -o BrickSet_2016.csv```
+
+A csv file will be created with all the information.
+
+## Conclusion
+
+In this exercise we have built a funtional spider that extracts data from web pages in less than 30 lines of code. There is however a lot of fun things you can do with this spider:
+
+1. How could you crawl results from years other than 2016?
+2. How do you extract data for the retail price (like in pieces and mifigs).
+3. Most of the results have tags that specify semantics data about the sets or their context. How do we crawl these?
