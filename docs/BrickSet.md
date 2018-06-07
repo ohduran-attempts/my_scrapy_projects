@@ -121,3 +121,23 @@ The output will be a collection of something like this:
 ```python
 {'minifigs': '5', 'pieces': '2380', 'name': 'Brick Bank', 'image': 'http://images.brickset.com/sets/small/10251-1.jpg?201510121127'}
 ```
+
+## Step 3 - Crawling Multiple pages
+
+Extracting data from the intial page is done, but we're not progressing past it to see the rest. The whole point of a spider is to detect and traverse links to other pages and grab data from those too.
+
+You'll notice that the top and bottom of each page has a little right carat `>` that links to the next page.
+
+```html
+<div class='pagelength'>
+  ...
+  <li class='next'>
+  <a href="https://brickset.com/sets/year-2016/page-2">›</a>
+  </li>
+  ...
+</div>
+```
+
+There is, as you can see, a `li` tag with class 'next', and inside that tag, there is an `a` tag with a link to the next page.
+
+Once the next page selector is defined, if you run the spider again you'll see that it doesn't just stop once it iterates through the first page of sets, but keeps going through all 23 pages.
