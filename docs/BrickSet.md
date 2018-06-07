@@ -83,3 +83,41 @@ Since we are looking for a class, we will use '.set' in the selector. Another lo
 ```
 
 The brickset object has its own css method, so we can pass in a selector to locate child elements.
+
+Let's have another look at it:
+
+```html
+<article class="set">
+  <a class="highslide plain mainimg" href="http://images.brickset.com/sets/images/10251-1.jpg?201510121127" onclick="return hs.expand(this)">
+    <img src="http://images.brickset.com/sets/small/10251-1.jpg?201510121127" title="10251-1: Brick Bank"></a>
+  ...
+  <div class="meta">
+    <h1><a href="/sets/10251-1/Brick-Bank"><span>10251:</span> Brick Bank</a> </h1>
+    ...
+    <div class="col">
+      <dl>
+        <dt>Pieces</dt>
+        <dd><a class="plain" href="/inventories/10251-1">2380</a></dd>
+        <dt>Minifigs</dt>
+        <dd><a class="plain" href="/minifigs/inset-10251-1">5</a></dd>
+        ...
+      </dl>
+    </div>
+    ...
+  </div>
+</article>
+```
+
+- The image for the set is stored in the `src` attribute of an `img` tag inside an `a`.
+- Getting the number of pieces is trickier: there is a `dt` tag that contains the text `Pieces`, and then a `dd` tag that follows it which contains the actual number of pieces.
+- Getting the number of minigifs is similar to the number of pieces. There is a `dt` tag that contains the text `Minifigs`, followed by a `dd` tag after that with the number.
+
+Once you have modified the scraper, run it again:
+
+```scrapy runspider scraper.py```
+
+The output will be a collection of something like this:
+
+```python
+{'minifigs': '5', 'pieces': '2380', 'name': 'Brick Bank', 'image': 'http://images.brickset.com/sets/small/10251-1.jpg?201510121127'}
+```
