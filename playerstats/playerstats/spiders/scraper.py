@@ -9,10 +9,10 @@ class PlayerStastsScraper(scrapy.Spider):
 
     def parse(self, response):
         """Parse the web start_urls."""
+        player_items = {}
 
         POSITION_SELECTOR = '.posiciones-equipo'
         for position in response.css(POSITION_SELECTOR)[1:]:
-            player_items = {}
 
             POSITION_NAME_SELECTOR = '.titulo_posicion ::text'
             player_items['position'] = position.css(
@@ -25,4 +25,23 @@ class PlayerStastsScraper(scrapy.Spider):
                 player_items['player_name'] = player.css(
                     PLAYER_NAME_SELECTOR).extract_first()
 
+                STATS_PAGE_SELECTOR = '::attr(href)'
+                stats_page = response.css(STATS_PAGE_SELECTOR).extract_first()
+                if stats_page:
+                    player_stats = scrapy.Request(
+                        response.urljoin(stats_page),
+                        callback=self.parse_stats)
+                    player_items['stats'] = player_stats
+
                 yield player_items
+
+    def parse_stats(self, response):
+        """Parse specific stats page for each player"""
+        player_stats = {}
+        stats = [
+            'min',
+            'games played',
+            'PC games played',
+            'full games played',
+            'PC full games played'
+        ]
