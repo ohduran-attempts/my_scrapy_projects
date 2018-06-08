@@ -1,22 +1,25 @@
 import scrapy
 
-class BrickSetSpider(scrapy.Spider):
+
+class PlayerStastsScraper(scrapy.Spider):
     """Scraper for accessing the BrickSet."""
+
     name = 'laliga_scraper'
     start_urls = ['http://www.laliga.es/en/laliga-santander/real-madrid']
 
     def parse(self, response):
+        """Parse the web start_urls."""
         # Since we are looking for a class, we will use '.set' in the selector.
-        SET_SELECTOR = '.box-jugador'
-        for player in response.css(SET_SELECTOR):
-            # The brickset object has its own css method,
-            # so we can pass in a selector to locate child elements.
-            NAME_SELECTOR = '.nombre-perfil div ::text'  # append ::text to fetch text inside of the a tag
+        POSITION_SELECTOR = '.posiciones-equipo .posiciones'
 
+        for position in response.css(POSITION_SELECTOR):
+            NAME_SELECTOR = '.nombre-perfil ::text'
             yield {
-                'name': player.css(NAME_SELECTOR).extract_first(),
+                'player_name': position.css(NAME_SELECTOR).extract_first(),
             }
 
+
+#/html/body/div[2]/section[2]/div/section/div[2]/div[2]/div[2]/a[1]/div[2]
         # NEXT_PAGE_SELECTOR = '.next a ::attr(href)'
         # next_page = response.css(NEXT_PAGE_SELECTOR).extract_first()
         # if next_page:

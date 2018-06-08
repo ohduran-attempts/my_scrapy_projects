@@ -11,4 +11,4 @@ import scrapy
 class PlayerstatsItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    player_name = scrapy.Field()
