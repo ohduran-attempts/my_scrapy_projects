@@ -15,13 +15,18 @@ class PlayerStastsScraper(scrapy.Spider):
 
         for position in response.css(POSITION_SELECTOR)[1:]:
             POSITION_NAME_SELECTOR = '.titulo_posicion ::text'
-            PLAYER_NAME_SELECTOR = ' .posiciones .nombre-perfil ::text'
 
             items['position'] = position.css(
                 POSITION_NAME_SELECTOR).extract_first()
-            items['player_name'] = position.css(
-                PLAYER_NAME_SELECTOR).extract_first()
+
+            PLAYER_SELECTOR = '.posiciones .box-jugador'
+
+            for player in position.css(PLAYER_SELECTOR):
+                PLAYER_NAME_SELECTOR = '.nombre-perfil ::text'
+                items['player_name'] = position.css(
+                    PLAYER_NAME_SELECTOR).extract_first()
+
+                # REMOVE NONE VALUES
+                yield items
 
             # REMOVE NONE VALUES
-
-            yield items
