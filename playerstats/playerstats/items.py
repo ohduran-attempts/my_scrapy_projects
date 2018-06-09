@@ -8,7 +8,28 @@
 import scrapy
 
 
-class PlayerstatsItem(scrapy.Item):
+class PlayerItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    player_name = scrapy.Field()
+    name = scrapy.Field()
+    position = scrapy.Field()
+    stats = scrapy.Field()
+
+
+class StatsItem(scrapy.Item):
+    minutes = scrapy.Field()
+    games_played = scrapy.Field()
+    games_played_pc = scrapy.Field()
+    games_played_full = scrapy.Field()
+    games_played_full_pc = scrapy.Field()
+    games_started = scrapy.Field()
+    games_started_pc = scrapy.Field()
+    games_where_subsituted = scrapy.Field()
+    games_where_subsituted_pc = scrapy.Field()
+    cards_yellow = scrapy.Field()
+    cards_red = scrapy.Field()
+    cards_doubleyellow = scrapy.Field()
+    goals_scored = scrapy.Field()
+    goals_scored_penalty = scrapy.Field()
+    goals_owngoals = scrapy.Field()
+    goals_conceded = scrapy.Field()
