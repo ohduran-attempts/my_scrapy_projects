@@ -37,6 +37,7 @@ class PlayerStastsScraper(scrapy.Spider):
 
     def parse_stats(self, response):
         """Parse specific stats page for each player"""
+        # http://laliga.es/en/player/keylor-navas
         player_stats = {}
         stats = [
             'min',
@@ -45,3 +46,9 @@ class PlayerStastsScraper(scrapy.Spider):
             'full games played',
             'PC full games played'
         ]
+
+        a_selector_css = '.estadisticas-jugador-1'
+        b_selector_xpath_0 = '//section[@id="box-estadisticas-jugador"]'  #take element 0 of this
+        c_selector_css_1 = 'div'  # take element 1 of this
+        d_selector_xpath = '//table[@class="datatable"]/tbody/tr'  # for item in d
+        e_selector_xpath = 'td/text()'
