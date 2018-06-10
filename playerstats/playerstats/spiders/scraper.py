@@ -30,19 +30,16 @@ class PlayerStastsScraper(scrapy.Spider):
 
                 stats_page = player.css(STATS_PAGE_SELECTOR).extract_first()
                 if stats_page:
-                    player_stats = StatsItem()
-                    stats = scrapy.Request(
+                    yield scrapy.Request(
                         stats_page,
-                        callback=self.parse_stats)
-                    stats.meta['stats'] = player_stats
-
-                player_items['stats'] = stats
-                yield player_items
+                        callback=self.parse_stats,
+                        meta={'item': player_items})
 
     def parse_stats(self, response):
         """Parse specific stats page for each player"""
         # http://laliga.es/en/player/keylor-navas
-        player_stats = response.meta['stats']
+        player_items = response.meta['item']
+        player_stats = {}
         stats_keys = [
             'minutes',
             'games_played',
@@ -82,4 +79,6 @@ class PlayerStastsScraper(scrapy.Spider):
                     player_stats_in_condition = dict(zip(stats_keys, condition[1:]))
                     player_stats[condition[0]] = player_stats_in_condition
 
-        yield player_stats
+        player_items['stats'] = player_stats
+
+        return player_items
