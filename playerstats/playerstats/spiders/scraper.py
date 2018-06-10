@@ -1,6 +1,6 @@
 import scrapy
 import logging
-from playerstats.items import PlayerItem, StatsItem, ConditionsStatsItems
+from playerstats.items import PlayerItem
 
 
 class PlayerStastsScraper(scrapy.Spider):
@@ -12,7 +12,6 @@ class PlayerStastsScraper(scrapy.Spider):
 
     def parse(self, response):
         """Parse the web start_urls."""
-
         POSITION_SELECTOR = '.posiciones-equipo'
         POSITION_NAME_SELECTOR = '.titulo_posicion ::text'
         PLAYER_SELECTOR = '.posiciones .box-jugador'
