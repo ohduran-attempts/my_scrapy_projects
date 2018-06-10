@@ -16,6 +16,15 @@ class PlayerItem(scrapy.Item):
     stats = scrapy.Field()
 
 
+class ConditionsStatsItems(scrapy.Item):
+    Home = scrapy.Field()
+    Draws = scrapy.Field()
+    Defeats = scrapy.Field()
+    Away = scrapy.Field()
+    Season = scrapy.Field()
+    Wins = scrapy.Field()
+
+
 class StatsItem(scrapy.Item):
     minutes = scrapy.Field()
     games_played = scrapy.Field()

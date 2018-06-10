@@ -1,5 +1,5 @@
 import scrapy
-from playerstats.items import PlayerItem, StatsItem
+from playerstats.items import PlayerItem, StatsItem, ConditionsStatsItems
 
 
 class PlayerStastsScraper(scrapy.Spider):
@@ -10,7 +10,6 @@ class PlayerStastsScraper(scrapy.Spider):
 
     def parse(self, response):
         """Parse the web start_urls."""
-        player_items = PlayerItem()
 
         POSITION_SELECTOR = '.posiciones-equipo'
         POSITION_NAME_SELECTOR = '.titulo_posicion ::text'
@@ -19,6 +18,7 @@ class PlayerStastsScraper(scrapy.Spider):
         STATS_PAGE_SELECTOR = '::attr(href)'
 
         for position in response.css(POSITION_SELECTOR)[1:]:
+            player_items = PlayerItem()
 
             player_items['position'] = position.css(
                 POSITION_NAME_SELECTOR).extract_first()
@@ -65,10 +65,13 @@ class PlayerStastsScraper(scrapy.Spider):
         d_selector_xpath = '//table[@class="datatable"]/tbody/tr'  # for item in d
         e_selector_xpath = 'td/text()'
 
-        a = response.css(a_selector_css)
-        b = a.xpath(b_selector_xpath_0)
-        c = b[0].css(c_selector_css_1)
-        d = c[1].xpath(d_selector_xpath)
+        try:
+                a = response.css(a_selector_css)
+                b = a.xpath(b_selector_xpath_0)
+                c = b[0].css(c_selector_css_1)
+                d = c[1].xpath(d_selector_xpath)
+        except Exception:
+                return None
 
         stats_values_by_condition = []
         for item in d:
@@ -76,8 +79,11 @@ class PlayerStastsScraper(scrapy.Spider):
             stats_values_by_condition.append(e)
 
         for condition in stats_values_by_condition:
-                    player_stats_in_condition = dict(zip(stats_keys, condition[1:]))
-                    player_stats[condition[0]] = player_stats_in_condition
+                if condition[0] == u'2017/2018':
+                        condition[0] = 'Season'
+
+                player_stats_in_condition = dict(zip(stats_keys, condition[1:]))
+                player_stats[condition[0]] = player_stats_in_condition
 
         player_items['stats'] = player_stats
 
