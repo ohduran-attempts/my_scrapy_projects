@@ -1,4 +1,5 @@
 import scrapy
+import logging
 from playerstats.items import PlayerItem, StatsItem, ConditionsStatsItems
 
 
@@ -7,6 +8,7 @@ class PlayerStastsScraper(scrapy.Spider):
 
     name = 'laliga_scraper'
     start_urls = ['http://www.laliga.es/en/laliga-santander/real-madrid']
+    download_delay = 2
 
     def parse(self, response):
         """Parse the web start_urls."""
@@ -39,6 +41,8 @@ class PlayerStastsScraper(scrapy.Spider):
         """Parse specific stats page for each player"""
         # http://laliga.es/en/player/keylor-navas
         player_items = response.meta['item']
+        logging.info(player_items)
+
         player_stats = {}
         stats_keys = [
             'minutes',
@@ -71,7 +75,7 @@ class PlayerStastsScraper(scrapy.Spider):
                 c = b[0].css(c_selector_css_1)
                 d = c[1].xpath(d_selector_xpath)
         except Exception:
-                return None
+                return player_items
 
         stats_values_by_condition = []
         for item in d:
