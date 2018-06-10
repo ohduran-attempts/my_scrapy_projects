@@ -1,4 +1,5 @@
 import scrapy
+from playerstats.items import PlayerItem
 
 
 class PlayerStastsScraper(scrapy.Spider):
@@ -9,7 +10,7 @@ class PlayerStastsScraper(scrapy.Spider):
 
     def parse(self, response):
         """Parse the web start_urls."""
-        player_items = {}
+        player_items = PlayerItem()
 
         POSITION_SELECTOR = '.posiciones-equipo'
         for position in response.css(POSITION_SELECTOR)[1:]:
@@ -22,17 +23,17 @@ class PlayerStastsScraper(scrapy.Spider):
             for player in position.css(PLAYER_SELECTOR):
 
                 PLAYER_NAME_SELECTOR = '.nombre-perfil ::text'
-                player_items['player_name'] = player.css(
+                player_items['name'] = player.css(
                     PLAYER_NAME_SELECTOR).extract_first()
 
-                STATS_PAGE_SELECTOR = '::attr(href)'
-                stats_page = player.css(STATS_PAGE_SELECTOR).extract_first()
-                if stats_page:
-                    stats = scrapy.Request(
-                        stats_page,
-                        callback=self.parse_stats)
-
-                player_items['stats'] = stats
+                # STATS_PAGE_SELECTOR = '::attr(href)'
+                # stats_page = player.css(STATS_PAGE_SELECTOR).extract_first()
+                # if stats_page:
+                #     stats = scrapy.Request(
+                #         stats_page,
+                #         callback=self.parse_stats)
+                #
+                # player_items['stats'] = stats
                 yield player_items
 
     def parse_stats(self, response):
